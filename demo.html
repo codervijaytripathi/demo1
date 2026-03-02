@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Portfolio | Creative Expert & Consultant</title>
+    <meta name="description" content="Premium portfolio template for creative professionals, developers, designers, and agencies. Fully customizable and dynamic.">
+    
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Creative Professional",
+        "jobTitle": "Expert Consultant & Developer",
+        "description": "Premium creative services and digital solutions",
+        "url": "https://yourdomain.com",
+        "sameAs": [],
+        "knowsAbout": ["Web Development", "Design", "Consulting", "Digital Marketing"]
+    }
+    </script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+        }
+        
+        .dark {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --card-bg: #1e293b;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .text-secondary-custom {
+            color: var(--text-secondary);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        }
+        
+        .dark .hero-gradient {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }
+        
+        .skill-bar {
+            background: linear-gradient(90deg, #0ea5e9, #8b5cf6);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .portfolio-overlay {
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
+        }
+        
+        .dark .portfolio-overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0ea5e9, #8b5cf6);
+            border-radius: 5px;
+        }
+        
+        .theme-toggle {
+            transition: transform 0.3s;
+        }
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0ea5e9, #8b5cf6);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .pricing-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .dark .pricing-card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        .testimonial-card {
+            transition: transform 0.3s;
+        }
+        .testimonial-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .service-icon {
+            transition: transform 0.3s;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .whatsapp-btn {
+            background: #25d366;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+        }
+        
+        .admin-panel {
+            display: none;
+        }
+        
+        .admin-panel.active {
+            display: block;
+        }
+        
+        .editable-field {
+            border: 2px dashed transparent;
+            transition: all 0.2s;
+        }
+        
+        .admin-mode .editable-field {
+            border-color: #0ea5e9;
+            cursor: pointer;
+            background: rgba(14, 165, 233, 0.05);
+        }
+        
+        .admin-mode .editable-field:hover {
+            background: rgba(14, 165, 233, 0.1);
+        }
+        
+        .drag-ghost {
+            opacity: 0.5;
+            background: #0ea5e9;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    
+    <!-- Admin Toggle (Hidden in production, shown for demo) -->
+    <div id="admin-bar" class="fixed top-0 left-0 w-full bg-slate-900 text-white py-2 px-4 z-[60] hidden">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+            <div class="flex items-center space-x-4">
+                <span class="font-bold"><i class="fas fa-lock mr-2"></i>Admin Mode</span>
+                <button onclick="toggleEditMode()" class="text-sm bg-blue-600 px-3 py-1 rounded hover:bg-blue-700">
+                    <i class="fas fa-edit mr-1"></i>Edit Content
+                </button>
+                <button onclick="openAdminPanel()" class="text-sm bg-purple-600 px-3 py-1 rounded hover:bg-purple-700">
+                    <i class="fas fa-cog mr-1"></i>Dashboard
+                </button>
+            </div>
+            <button onclick="logoutAdmin()" class="text-sm text-red-400 hover:text-red-300">
+                <i class="fas fa-sign-out-alt mr-1"></i>Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 top-0">
+        <div class="glass border-b border-transparent">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
+                            <span id="logo-text">P</span>
+                        </div>
+                        <span class="font-display font-bold text-2xl tracking-tight">
+                            <span id="brand-name">Portfolio</span><span class="gradient-text">Pro</span>
+                        </span>
+                    </div>
+                    
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#home" class="nav-link text-sm font-medium text-secondary-custom hover:text-primary-600 transition-colors">Home</a>
+                        <a href="#about" class="nav-link text-sm font-medium text-secondary-custom hover:text-primary-600 transition-colors">About</a>
+                        <a href="#services" class="nav-link text-sm font-medium text-secondary-custom hover:text-primary-600 transition-colors">Services</a>
+                        <a href="#portfolio" class="nav-link text-sm font-medium text-secondary-custom hover:text-primary-600 transition-colors">Work</a>
+                        <a href="#pricing" class="nav-link text-sm font-medium text-secondary-custom hover:text-primary-600 transition-colors">Pricing</a>
+                        <a href="#blog" class="nav-link text-sm font-medium text-secondary-custom hover:text-primary-600 transition-colors">Blog</a>
+                        <a href="#contact" class="nav-link text-sm font-medium text-secondary-custom hover:text-primary-600 transition-colors">Contact</a>
+                    </div>
+                    
+                    <!-- Right Side -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Theme Toggle -->
+                        <button onclick="toggleTheme()" class="theme-toggle w-10 h-10 rounded-full glass flex items-center justify-center text-secondary-custom hover:text-primary-600 transition-colors">
+                            <i class="fas fa-sun text-xl dark:hidden"></i>
+                            <i class="fas fa-moon text-xl hidden dark:block"></i>
+                        </button>
+                        
+                        <!-- CTA Button -->
+                        <a href="#contact" class="hidden md:flex px-6 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 text-white font-medium text-sm hover:shadow-lg hover:shadow-primary-500/30 transition-all transform hover:-translate-y-0.5">
+                            Hire Me
+                        </a>
+                        
+                        <!-- Mobile Menu Button -->
+                        <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-lg glass flex items-center justify-center">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 space-y-3">
+                <a href="#home" class="block py-2 text-secondary-custom hover:text-primary-600">Home</a>
+                <a href="#about" class="block py-2 text-secondary-custom hover:text-primary-600">About</a>
+                <a href="#services" class="block py-2 text-secondary-custom hover:text-primary-600">Services</a>
+                <a href="#portfolio" class="block py-2 text-secondary-custom hover:text-primary-600">Work</a>
+                <a href="#pricing" class="block py-2 text-secondary-custom hover:text-primary-600">Pricing</a>
+                <a href="#contact" class="block py-2 text-primary-600 font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <!-- Background -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 hero-gradient"></div>
+            <div class="absolute top-0 right-0 w-1/2 h-full opacity-30">
+                <img id="hero-bg-image" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80" alt="Background" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-primary)] to-transparent"></div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-10 w-20 h-20 rounded-full bg-primary-500/10 animate-pulse"></div>
+            <div class="absolute top-40 right-1/4 w-32 h-32 rounded-full bg-purple-500/10 animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-20 left-1/4 w-24 h-24 rounded-full bg-pink-500/10 animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass mb-6 border border-primary-500/30">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-sm font-medium text-secondary-custom">Available for new projects</span>
+                    </div>
+                    
+                    <h1 class="font-display text-5xl md:text-7xl font-bold leading-tight mb-6 editable-field" data-field="hero-title">
+                        Crafting Digital <span class="gradient-text">Excellence</span> & Creative Solutions
+                    </h1>
+                    
+                    <p class="text-xl text-secondary-custom mb-8 max-w-lg editable-field" data-field="hero-subtitle">
+                        Professional consultant and creative expert specializing in transforming ideas into impactful digital experiences.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 mb-12">
+                        <a href="#portfolio" class="group px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-primary-500/30 transition-all transform hover:-translate-y-1 flex items-center space-x-2">
+                            <span>View My Work</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#contact" class="px-8 py-4 rounded-full glass font-semibold hover:bg-primary-500/10 transition-all border border-[var(--border-color)] flex items-center space-x-2">
+                            <span>Hire Me</span>
+                        </a>
+                        <a href="tel:XXXXXXXXXX" class="px-8 py-4 rounded-full glass font-semibold hover:bg-primary-500/10 transition-all border border-[var(--border-color)] flex items-center space-x-2">
+                            <i class="fas fa-phone"></i>
+                            <span>XXXXXXXXXX</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="flex gap-8">
+                        <div>
+                            <div class="text-3xl font-bold gradient-text counter" data-target="8">0</div>
+                            <div class="text-sm text-secondary-custom">Years Experience</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold gradient-text counter" data-target="150">0</div>
+                            <div class="text-sm text-secondary-custom">Projects Done</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold gradient-text counter" data-target="50">0</div>
+                            <div class="text-sm text-secondary-custom">Happy Clients</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hero Image/Video -->
+                <div class="reveal relative hidden lg:block">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary-500 to-purple-600 rounded-3xl blur-2xl opacity-20"></div>
+                        <div class="relative rounded-3xl overflow-hidden border border-[var(--border-color)] shadow-2xl">
+                            <img id="hero-image" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Professional" class="w-full h-auto object-cover">
+                        </div>
+                        
+                        <!-- Floating Card -->
+                        <div class="absolute -bottom-6 -left-6 glass rounded-2xl p-4 border border-[var(--border-color)] shadow-xl animate-bounce" style="animation-duration: 3s;">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center text-white">
+                                    <i class="fas fa-award text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold">Top Rated</div>
+                                    <div class="text-sm text-secondary-custom">Freelancer 2024</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal order-2 lg:order-1">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary-500/20 to-purple-600/20 rounded-3xl blur-2xl"></div>
+                        <div class="relative rounded-3xl overflow-hidden border border-[var(--border-color)]">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80" alt="About" class="w-full h-auto">
+                        </div>
+                        
+                        <!-- Experience Badge -->
+                        <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center text-white shadow-xl">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">8+</div>
+                                <div class="text-xs">Years</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal order-1 lg:order-2">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6 editable-field" data-field="about-title">
+                        Transforming Visions Into <span class="gradient-text">Reality</span>
+                    </h2>
+                    
+                    <div class="space-y-4 text-secondary-custom text-lg mb-8 editable-field" data-field="about-content">
+                        <p>With over 8 years of experience in digital creativity and technical excellence, I help businesses and individuals bring their ideas to life through innovative solutions.</p>
+                        <p>My approach combines strategic thinking with creative execution, ensuring every project not only looks exceptional but delivers measurable results.</p>
+                    </div>
+                    
+                    <!-- Skills -->
+                    <div class="space-y-4 mb-8">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Strategy & Consulting</span>
+                                <span class="text-primary-600">95%</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Creative Design</span>
+                                <span class="text-primary-600">90%</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Technical Development</span>
+                                <span class="text-primary-600">88%</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <a href="#" class="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 text-white font-medium hover:shadow-lg transition-all">
+                            <i class="fas fa-download mr-2"></i>Download CV
+                        </a>
+                        <a href="#contact" class="px-6 py-3 rounded-full glass border border-[var(--border-color)] font-medium hover:bg-primary-500/10 transition-all">
+                            Let's Talk
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 relative bg-[var(--bg-secondary)]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 editable-field" data-field="services-title">Premium <span class="gradient-text">Services</span></h2>
+                <p class="text-secondary-custom text-lg max-w-2xl mx-auto editable-field" data-field="services-subtitle">Comprehensive solutions tailored to elevate your brand and business</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="services-grid">
+                <!-- Service cards will be dynamically rendered -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 editable-field" data-field="portfolio-title">Featured <span class="gradient-text">Work</span></h2>
+                <p class="text-secondary-custom text-lg max-w-2xl mx-auto editable-field" data-field="portfolio-subtitle">Explore my latest projects and creative endeavors</p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12 reveal" id="portfolio-filters">
+                <button class="filter-btn active px-6 py-2 rounded-full glass border border-[var(--border-color)] text-sm font-medium transition-all" data-filter="all">All</button>
+                <button class="filter-btn px-6 py-2 rounded-full glass border border-[var(--border-color)] text-sm font-medium transition-all" data-filter="branding">Branding</button>
+                <button class="filter-btn px-6 py-2 rounded-full glass border border-[var(--border-color)] text-sm font-medium transition-all" data-filter="web">Web Design</button>
+                <button class="filter-btn px-6 py-2 rounded-full glass border border-[var(--border-color)] text-sm font-medium transition-all" data-filter="photography">Photography</button>
+                <button class="filter-btn px-6 py-2 rounded-full glass border border-[var(--border-color)] text-sm font-medium transition-all" data-filter="marketing">Marketing</button>
+            </div>
+            
+            <!-- Portfolio Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+                <!-- Portfolio items will be dynamically rendered -->
+            </div>
+            
+            <div class="text-center mt-12 reveal">
+                <button onclick="loadMorePortfolio()" class="px-8 py-3 rounded-full glass border border-[var(--border-color)] font-medium hover:bg-primary-500/10 transition-all">
+                    Load More Projects
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Study Section -->
+    <section id="casestudy" class="py-24 relative bg-[var(--bg-secondary)]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Success <span class="gradient-text">Stories</span></h2>
+                <p class="text-secondary-custom text-lg max-w-2xl mx-auto">Deep dives into transformative projects and results</p>
+            </div>
+            
+            <div class="reveal glass rounded-3xl p-8 md:p-12 border border-[var(--border-color)]">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary-500/10 border border-primary-500/30 mb-6">
+                            <i class="fas fa-star text-primary-500 text-xs"></i>
+                            <span class="text-xs font-medium text-primary-600">Featured Case Study</span>
+                        </div>
+                        <h3 class="font-display text-3xl md:text-4xl font-bold mb-6">E-commerce Transformation</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-exclamation text-red-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">The Challenge</h4>
+                                    <p class="text-secondary-custom text-sm">Legacy platform with poor UX and declining sales</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-lightbulb text-purple-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">The Approach</h4>
+                                    <p class="text-secondary-custom text-sm">Complete redesign with focus on mobile experience</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">The Results</h4>
+                                    <p class="text-secondary-custom text-sm">300% increase in conversions and 50% faster load times</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-[var(--border-color)]">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold gradient-text">300%</div>
+                                <div class="text-xs text-secondary-custom">Revenue Growth</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold gradient-text">50%</div>
+                                <div class="text-xs text-secondary-custom">Faster Load</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold gradient-text">4.9</div>
+                                <div class="text-xs text-secondary-custom">User Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur-2xl opacity-20"></div>
+                        <div class="relative rounded-2xl overflow-hidden border border-[var(--border-color)]">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Case Study" class="w-full h-auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Transparent <span class="gradient-text">Pricing</span></h2>
+                <p class="text-secondary-custom text-lg max-w-2xl mx-auto">Choose the perfect plan for your needs</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Basic -->
+                <div class="reveal pricing-card card rounded-3xl p-8 border border-[var(--border-color)] relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="font-display text-xl font-bold mb-2">Basic</h3>
+                        <p class="text-secondary-custom text-sm mb-6">Perfect for small projects</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold">$999</span>
+                            <span class="text-secondary-custom">/project</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Up to 5 pages</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Responsive design</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Basic SEO setup</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>2 revision rounds</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm text-secondary-custom">
+                                <i class="fas fa-times"></i>
+                                <span>Custom animations</span>
+                            </li>
+                        </ul>
+                        <button onclick="selectPricing('basic')" class="w-full py-3 rounded-xl glass border border-[var(--border-color)] font-medium hover:bg-primary-500/10 transition-all">
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Professional -->
+                <div class="reveal pricing-card card rounded-3xl p-8 border-2 border-primary-500 relative overflow-hidden transform scale-105 shadow-xl">
+                    <div class="absolute top-0 right-0 bg-gradient-to-r from-primary-500 to-purple-600 text-white text-xs font-bold px-4 py-1 rounded-bl-xl">
+                        POPULAR
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="font-display text-xl font-bold mb-2">Professional</h3>
+                        <p class="text-secondary-custom text-sm mb-6">Best for growing businesses</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold gradient-text">$2,499</span>
+                            <span class="text-secondary-custom">/project</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Up to 15 pages</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Advanced animations</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>CMS integration</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>5 revision rounds</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Priority support</span>
+                            </li>
+                        </ul>
+                        <button onclick="selectPricing('professional')" class="w-full py-3 rounded-xl bg-gradient-to-r from-primary-500 to-purple-600 text-white font-medium hover:shadow-lg transition-all">
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Premium -->
+                <div class="reveal pricing-card card rounded-3xl p-8 border border-[var(--border-color)] relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="font-display text-xl font-bold mb-2">Enterprise</h3>
+                        <p class="text-secondary-custom text-sm mb-6">For large scale projects</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold">Custom</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Unlimited pages</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Custom functionality</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Dedicated support</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Unlimited revisions</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm">
+                                <i class="fas fa-check text-green-500"></i>
+                                <span>Strategy consulting</span>
+                            </li>
+                        </ul>
+                        <button onclick="selectPricing('enterprise')" class="w-full py-3 rounded-xl glass border border-[var(--border-color)] font-medium hover:bg-primary-500/10 transition-all">
+                            Contact Us
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 relative bg-[var(--bg-secondary)]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Client <span class="gradient-text">Testimonials</span></h2>
+                <p class="text-secondary-custom text-lg max-w-2xl mx-auto">What people say about working with me</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8" id="testimonials-grid">
+                <!-- Testimonials will be dynamically rendered -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12 reveal">
+                <div>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Latest <span class="gradient-text">Insights</span></h2>
+                    <p class="text-secondary-custom text-lg max-w-2xl">Thoughts on design, development, and digital strategy</p>
+                </div>
+                <a href="#" class="mt-4 md:mt-0 text-primary-600 font-medium hover:underline flex items-center">
+                    View All Posts <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8" id="blog-grid">
+                <!-- Blog posts will be dynamically rendered -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative bg-[var(--bg-secondary)]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div class="reveal">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Let's Create Something <span class="gradient-text">Amazing</span></h2>
+                    <p class="text-secondary-custom text-lg mb-8">Have a project in mind? Let's discuss how we can work together to bring your vision to life.</p>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-xl glass flex items-center justify-center text-primary-600">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-secondary-custom">Email</div>
+                                <div class="font-medium editable-field" data-field="contact-email">hello@example.com</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-xl glass flex items-center justify-center text-primary-600">
+                                <i class="fas fa-phone text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-secondary-custom">Phone</div>
+                                <div class="font-medium editable-field" data-field="contact-phone">XXXXXXXXXX</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-xl glass flex items-center justify-center text-primary-600">
+                                <i class="fas fa-map-marker-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-secondary-custom">Location</div>
+                                <div class="font-medium editable-field" data-field="contact-address">Available Worldwide</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-primary-500/10 transition-all border border-[var(--border-color)]">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-primary-500/10 transition-all border border-[var(--border-color)]">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-primary-500/10 transition-all border border-[var(--border-color)]">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-primary-500/10 transition-all border border-[var(--border-color)]">
+                            <i class="fab fa-dribbble text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="reveal">
+                    <form id="contact-form" class="card rounded-3xl p-8 border border-[var(--border-color)] space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Name *</label>
+                                <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none transition-colors" placeholder="Your name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Email *</label>
+                                <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none transition-colors" placeholder="your@email.com">
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Phone</label>
+                                <input type="tel" name="phone" class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none transition-colors" placeholder="Your phone">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Service Required *</label>
+                                <select name="service" required class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none transition-colors">
+                                    <option value="">Select a service</option>
+                                    <option value="web-design">Web Design</option>
+                                    <option value="branding">Branding</option>
+                                    <option value="consulting">Consulting</option>
+                                    <option value="marketing">Digital Marketing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Budget Range</label>
+                            <select name="budget" class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none transition-colors">
+                                <option value="">Select budget</option>
+                                <option value="1k-5k">$1,000 - $5,000</option>
+                                <option value="5k-10k">$5,000 - $10,000</option>
+                                <option value="10k-25k">$10,000 - $25,000</option>
+                                <option value="25k+">$25,000+</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Message *</label>
+                            <textarea name="message" rows="4" required class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none transition-colors resize-none" placeholder="Tell me about your project..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-primary-500 to-purple-600 text-white font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        
+                        <div id="form-status" class="hidden text-center py-3 rounded-lg"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer class="relative pt-20 pb-8 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Column 1: Brand -->
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
+                            P
+                        </div>
+                        <span class="font-display font-bold text-2xl">Portfolio<span class="gradient-text">Pro</span></span>
+                    </div>
+                    <p class="text-secondary-custom mb-6 editable-field" data-field="footer-description">
+                        Premium portfolio template for creative professionals. Showcase your work, generate leads, and grow your business.
+                    </p>
+                    <p class="text-sm text-secondary-custom italic editable-field" data-field="footer-tagline">
+                        "Crafting digital excellence since 2016"
+                    </p>
+                </div>
+                
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h4 class="font-display font-bold text-lg mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-secondary-custom hover:text-primary-600 transition-colors">Home</a></li>
+                        <li><a href="#about" class="text-secondary-custom hover:text-primary-600 transition-colors">About</a></li>
+                        <li><a href="#services" class="text-secondary-custom hover:text-primary-600 transition-colors">Services</a></li>
+                        <li><a href="#portfolio" class="text-secondary-custom hover:text-primary-600 transition-colors">Portfolio</a></li>
+                        <li><a href="#pricing" class="text-secondary-custom hover:text-primary-600 transition-colors">Pricing</a></li>
+                        <li><a href="#blog" class="text-secondary-custom hover:text-primary-600 transition-colors">Blog</a></li>
+                        <li><a href="#contact" class="text-secondary-custom hover:text-primary-600 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3: Services -->
+                <div>
+                    <h4 class="font-display font-bold text-lg mb-6">Services</h4>
+                    <ul class="space-y-3" id="footer-services">
+                        <!-- Dynamic services list -->
+                    </ul>
+                </div>
+                
+                <!-- Column 4: Contact -->
+                <div>
+                    <h4 class="font-display font-bold text-lg mb-6">Contact Info</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-envelope text-primary-600 mt-1"></i>
+                            <span class="text-secondary-custom editable-field" data-field="footer-email">hello@example.com</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-phone text-primary-600 mt-1"></i>
+                            <span class="text-secondary-custom editable-field" data-field="footer-phone">XXXXXXXXXX</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-map-marker-alt text-primary-600 mt-1"></i>
+                            <span class="text-secondary-custom editable-field" data-field="footer-address">123 Creative Street, Design City, DC 12345</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-primary-500/10 transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-primary-500/10 transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-primary-500/10 transition-all">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-primary-500/10 transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="pt-8 border-t border-[var(--border-color)] flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-secondary-custom text-sm">
+                    © 2024 PortfolioPro. All rights reserved.
+                </div>
+                <div class="flex items-center space-x-6 text-sm">
+                    <a href="#" class="text-secondary-custom hover:text-primary-600 transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-secondary-custom hover:text-primary-600 transition-colors">Terms & Conditions</a>
+                    <a href="#" class="text-secondary-custom hover:text-primary-600 transition-colors">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/XXXXXXXXXX" target="_blank" class="whatsapp-btn fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl z-40 transition-all duration-300 hover:scale-110 shadow-lg">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-[70] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="card rounded-2xl max-w-md w-full p-8 border border-[var(--border-color)] relative">
+                <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center hover:bg-primary-500/10">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h3 class="font-display text-2xl font-bold mb-2">Admin Login</h3>
+                <p class="text-secondary-custom mb-6">Access your dashboard</p>
+                
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email</label>
+                        <input type="email" id="login-email" required class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none" placeholder="admin@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-primary-500 focus:outline-none" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-primary-500 to-purple-600 text-white font-semibold hover:shadow-lg transition-all">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel (Hidden by default) -->
+    <div id="admin-panel" class="admin-panel fixed inset-0 z-[60] bg-[var(--bg-primary)] overflow-y-auto">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="font-display text-3xl font-bold">Admin Dashboard</h2>
+                <button onclick="closeAdminPanel()" class="px-4 py-2 rounded-lg glass border border-[var(--border-color)] hover:bg-primary-500/10">
+                    <i class="fas fa-times mr-2"></i>Close
+                </button>
+            </div>
+            
+            <!-- Dashboard Grid -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="card rounded-2xl p-6 border border-[var(--border-color)]">
+                    <div class="text-3xl font-bold gradient-text" id="stat-projects">12</div>
+                    <div class="text-secondary-custom">Total Projects</div>
+                </div>
+                <div class="card rounded-2xl p-6 border border-[var(--border-color)]">
+                    <div class="text-3xl font-bold gradient-text" id="stat-services">6</div>
+                    <div class="text-secondary-custom">Active Services</div>
+                </div>
+                <div class="card rounded-2xl p-6 border border-[var(--border-color)]">
+                    <div class="text-3xl font-bold gradient-text" id="stat-leads">24</div>
+                    <div class="text-secondary-custom">New Leads</div>
+                </div>
+                <div class="card rounded-2xl p-6 border border-[var(--border-color)]">
+                    <div class="text-3xl font-bold gradient-text" id="stat-views">1.2k</div>
+                    <div class="text-secondary-custom">Site Views</div>
+                </div>
+            </div>
+            
+            <!-- Management Sections -->
+            <div class="space-y-8">
+                <!-- Content Editor -->
+                <div class="card rounded-2xl p-6 border border-[var(--border-color)]">
+                    <h3 class="font-display text-xl font-bold mb-4">Content Management</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button onclick="editSection('hero')" class="p-4 rounded-xl glass border border-[var(--border-color)] hover:bg-primary-500/10 text-left">
+                            <i class="fas fa-home text-primary-600 mb-2"></i>
+                            <div class="font-medium">Hero Section</div>
+                        </button>
+                        <button onclick="editSection('about')" class="p-4 rounded-xl glass border border-[var(--border-color)] hover:bg-primary-500/10 text-left">
+                            <i class="fas fa-user text-primary-600 mb-2"></i>
+                            <div class="font-medium">About Section</div>
+                        </button>
+                        <button onclick="editSection('services')" class="p-4 rounded-xl glass border border-[var(--border-color)] hover:bg-primary-500/10 text-left">
+                            <i class="fas fa-briefcase text-primary-600 mb-2"></i>
+                            <div class="font-medium">Services</div>
+                        </button>
+                        <button onclick="editSection('portfolio')" class="p-4 rounded-xl glass border border-[var(--border-color)] hover:bg-primary-500/10 text-left">
+                            <i class="fas fa-image text-primary-600 mb-2"></i>
+                            <div class="font-medium">Portfolio</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Leads Table -->
+                <div class="card rounded-2xl p-6 border border-[var(--border-color)]">
+                    <h3 class="font-display text-xl font-bold mb-4">Recent Leads</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-[var(--border-color)]">
+                                    <th class="pb-3 font-medium">Name</th>
+                                    <th class="pb-3 font-medium">Service</th>
+                                    <th class="pb-3 font-medium">Budget</th>
+                                    <th class="pb-3 font-medium">Date</th>
+                                    <th class="pb-3 font-medium">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-table-body">
+                                <!-- Dynamic leads -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="fixed inset-0 z-[80] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeEditModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="card rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-[var(--border-color)] relative">
+                <div class="sticky top-0 bg-[var(--bg-primary)] border-b border-[var(--border-color)] p-6 flex items-center justify-between">
+                    <h3 class="font-display text-xl font-bold" id="edit-modal-title">Edit Content</h3>
+                    <button onclick="closeEditModal()" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:bg-primary-500/10">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="edit-modal-content" class="p-6 space-y-4">
+                    <!-- Dynamic form fields -->
+                </div>
+                <div class="sticky bottom-0 bg-[var(--bg-primary)] border-t border-[var(--border-color)] p-6 flex justify-end space-x-3">
+                    <button onclick="closeEditModal()" class="px-6 py-2 rounded-lg glass border border-[var(--border-color)] hover:bg-primary-500/10">Cancel</button>
+                    <button onclick="saveEditChanges()" class="px-6 py-2 rounded-lg bg-gradient-to-r from-primary-500 to-purple-600 text-white font-medium hover:shadow-lg">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Store (Simulated Database)
+        const db = {
+            services: [
+                {
+                    id: 1,
+                    icon: 'fa-paint-brush',
+                    title: 'Brand Identity',
+                    description: 'Complete branding solutions including logo design, color palettes, and brand guidelines.',
+                    price: 'From $1,500'
+                },
+                {
+                    id: 2,
+                    icon: 'fa-code',
+                    title: 'Web Development',
+                    description: 'Custom websites and web applications built with modern technologies and best practices.',
+                    price: 'From $2,500'
+                },
+                {
+                    id: 3,
+                    icon: 'fa-camera',
+                    title: 'Photography',
+                    description: 'Professional photography services for products, portraits, and commercial projects.',
+                    price: 'From $800'
+                },
+                {
+                    id: 4,
+                    icon: 'fa-bullhorn',
+                    title: 'Digital Marketing',
+                    description: 'Strategic marketing campaigns to increase visibility and drive conversions.',
+                    price: 'From $1,200'
+                },
+                {
+                    id: 5,
+                    icon: 'fa-video',
+                    title: 'Video Editing',
+                    description: 'High-quality video production and post-production services for all platforms.',
+                    price: 'From $1,000'
+                },
+                {
+                    id: 6,
+                    icon: 'fa-lightbulb',
+                    title: 'Consulting',
+                    description: 'Expert advice and strategic planning to help your business grow and succeed.',
+                    price: 'Custom'
+                }
+            ],
+            portfolio: [
+                {
+                    id: 1,
+                    title: 'Luxury Brand Identity',
+                    category: 'branding',
+                    image: 'https://images.unsplash.com/photo-1634942537034-2531766767d1?w=800&q=80',
+                    description: 'Complete brand redesign for luxury fashion house',
+                    tools: 'Figma, Illustrator',
+                    client: 'Fashion Co'
+                },
+                {
+                    id: 2,
+                    title: 'E-commerce Platform',
+                    category: 'web',
+                    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+                    description: 'Modern online shopping experience',
+                    tools: 'Next.js, Stripe',
+                    client: 'Retail Plus'
+                },
+                {
+                    id: 3,
+                    title: 'Architecture Portfolio',
+                    category: 'photography',
+                    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80',
+                    description: 'Architectural photography series',
+                    tools: 'Sony A7III, Lightroom',
+                    client: 'Arch Studio'
+                },
+                {
+                    id: 4,
+                    title: 'Marketing Campaign',
+                    category: 'marketing',
+                    image: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=800&q=80',
+                    description: 'Social media marketing strategy',
+                    tools: 'Meta Ads, Google',
+                    client: 'Tech Startup'
+                },
+                {
+                    id: 5,
+                    title: 'Corporate Website',
+                    category: 'web',
+                    image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
+                    description: 'Professional corporate web presence',
+                    tools: 'React, Tailwind',
+                    client: 'Corp Inc'
+                },
+                {
+                    id: 6,
+                    title: 'Product Photography',
+                    category: 'photography',
+                    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
+                    description: 'E-commerce product shots',
+                    tools: 'Canon R5, Studio',
+                    client: 'Product Co'
+                }
+            ],
+            testimonials: [
+                {
+                    id: 1,
+                    name: 'Sarah Johnson',
+                    company: 'Tech Innovations',
+                    role: 'CEO',
+                    review: 'Exceptional work quality and attention to detail. Delivered beyond expectations.',
+                    rating: 5,
+                    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80'
+                },
+                {
+                    id: 2,
+                    name: 'Michael Chen',
+                    company: 'Design Studio',
+                    role: 'Creative Director',
+                    review: 'Professional, creative, and always on time. Highly recommended for any project.',
+                    rating: 5,
+                    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80'
+                },
+                {
+                    id: 3,
+                    name: 'Emily Davis',
+                    company: 'Marketing Pro',
+                    role: 'Founder',
+                    review: 'Transformed our brand identity completely. The results speak for themselves.',
+                    rating: 5,
+                    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80'
+                }
+            ],
+            blog: [
+                {
+                    id: 1,
+                    title: 'The Future of Web Design in 2024',
+                    excerpt: 'Exploring emerging trends and technologies shaping the digital landscape.',
+                    category: 'Design',
+                    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
+                    date: 'Dec 15, 2024'
+                },
+                {
+                    id: 2,
+                    title: 'Maximizing ROI with Digital Marketing',
+                    excerpt: 'Strategies to improve your marketing efficiency and drive better results.',
+                    category: 'Marketing',
+                    image: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=800&q=80',
+                    date: 'Dec 10, 2024'
+                },
+                {
+                    id: 3,
+                    title: 'Building Scalable Applications',
+                    excerpt: 'Best practices for developing applications that grow with your business.',
+                    category: 'Development',
+                    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
+                    date: 'Dec 5, 2024'
+                }
+            ],
+            leads: [
+                { name: 'John Smith', service: 'Web Development', budget: '$5k-10k', date: '2024-12-20', status: 'New' },
+                { name: 'Lisa Wong', service: 'Branding', budget: '$2k-5k', date: '2024-12-19', status: 'Contacted' },
+                { name: 'David Brown', service: 'Consulting', budget: '$10k+', date: '2024-12-18', status: 'New' }
+            ]
+        };
+
+        // State Management
+        let isAdmin = false;
+        let editMode = false;
+        let currentEditSection = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderServices();
+            renderPortfolio();
+            renderTestimonials();
+            renderBlog();
+            renderFooterServices();
+            renderLeads();
+            initAnimations();
+            initCounters();
+        });
+
+        // Theme Toggle
+        function initTheme() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Render Functions
+        function renderServices() {
+            const grid = document.getElementById('services-grid');
+            grid.innerHTML = db.services.map(service => `
+                <div class="reveal service-card group card rounded-2xl p-8 border border-[var(--border-color)] hover:border-primary-500/50 transition-all cursor-pointer" onclick="openServiceDetail(${service.id})">
+                    <div class="service-icon w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500/10 to-purple-600/10 flex items-center justify-center mb-6 text-primary-600 text-3xl">
+                        <i class="fas ${service.icon}"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">${service.title}</h3>
+                    <p class="text-secondary-custom text-sm mb-4">${service.description}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-primary-600 font-semibold text-sm">${service.price}</span>
+                        <i class="fas fa-arrow-right text-secondary-custom group-hover:text-primary-600 group-hover:translate-x-2 transition-all"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPortfolio() {
+            const grid = document.getElementById('portfolio-grid');
+            grid.innerHTML = db.portfolio.map(item => `
+                <div class="reveal portfolio-item group relative rounded-2xl overflow-hidden border border-[var(--border-color)] cursor-pointer" data-category="${item.category}" onclick="openPortfolioDetail(${item.id})">
+                    <div class="aspect-[4/3] overflow-hidden">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="portfolio-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-primary-400 text-xs font-medium uppercase tracking-wider mb-2">${item.category}</span>
+                        <h3 class="font-display text-xl font-bold text-white mb-2">${item.title}</h3>
+                        <p class="text-gray-300 text-sm mb-4">${item.description}</p>
+                        <div class="flex gap-2">
+                            ${item.tools.split(', ').map(tool => `<span class="px-2 py-1 rounded bg-white/10 text-xs text-white">${tool}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTestimonials() {
+            const grid = document.getElementById('testimonials-grid');
+            grid.innerHTML = db.testimonials.map(t => `
+                <div class="reveal testimonial-card card rounded-2xl p-8 border border-[var(--border-color)] relative">
+                    <i class="fas fa-quote-right absolute top-6 right-6 text-4xl text-gray-200 dark:text-gray-700"></i>
+                    <div class="flex items-center space-x-1 mb-4">
+                        ${Array(5).fill().map((_, i) => `<i class="fas fa-star ${i < t.rating ? 'text-yellow-400' : 'text-gray-300'} text-sm"></i>`).join('')}
+                    </div>
+                    <p class="text-secondary-custom mb-6 relative z-10">"${t.review}"</p>
+                    <div class="flex items-center space-x-4">
+                        <img src="${t.image}" alt="${t.name}" class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <div class="font-semibold">${t.name}</div>
+                            <div class="text-sm text-secondary-custom">${t.role}, ${t.company}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderBlog() {
+            const grid = document.getElementById('blog-grid');
+            grid.innerHTML = db.blog.map(post => `
+                <article class="reveal card rounded-2xl overflow-hidden border border-[var(--border-color)] group cursor-pointer hover:border-primary-500/50 transition-all">
+                    <div class="aspect-video overflow-hidden">
+                        <img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <span class="px-3 py-1 rounded-full bg-primary-500/10 text-primary-600 text-xs font-medium">${post.category}</span>
+                            <span class="text-secondary-custom text-xs">${post.date}</span>
+                        </div>
+                        <h3 class="font-display text-xl font-bold mb-2 group-hover:text-primary-600 transition-colors">${post.title}</h3>
+                        <p class="text-secondary-custom text-sm mb-4">${post.excerpt}</p>
+                        <a href="#" class="text-primary-600 font-medium text-sm flex items-center group-hover:translate-x-2 transition-transform">
+                            Read More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderFooterServices() {
+            const list = document.getElementById('footer-services');
+            const popularServices = db.services.slice(0, 5);
+            list.innerHTML = popularServices.map(s => `
+                <li><a href="#services" class="text-secondary-custom hover:text-primary-600 transition-colors">${s.title}</a></li>
+            `).join('');
+        }
+
+        function renderLeads() {
+            const tbody = document.getElementById('leads-table-body');
+            if (tbody) {
+                tbody.innerHTML = db.leads.map(lead => `
+                    <tr class="border-b border-[var(--border-color)]">
+                        <td class="py-3">${lead.name}</td>
+                        <td class="py-3">${lead.service}</td>
+                        <td class="py-3">${lead.budget}</td>
+                        <td class="py-3">${lead.date}</td>
+                        <td class="py-3"><span class="px-2 py-1 rounded-full text-xs ${lead.status === 'New' ? 'bg-green-500/20 text-green-600' : 'bg-blue-500/20 text-blue-600'}">${lead.status}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Portfolio Filter
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                const items = document.querySelectorAll('.portfolio-item');
+                
+                items.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        gsap.to(item, { opacity: 1, scale: 1, duration: 0.4, display: 'block' });
+                    } else {
+                        gsap.to(item, { opacity: 0, scale: 0.8, duration: 0.4, display: 'none' });
+                    }
+                });
+            });
+        });
+
+        // Animations
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach((el, i) => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    delay: i % 3 * 0.1
+                });
+            });
+        }
+
+        function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                gsap.to(counter, {
+                    scrollTrigger: {
+                        trigger: counter,
+                        start: 'top 85%',
+                    },
+                    innerHTML: target,
+                    duration: 2,
+                    snap: { innerHTML: 1 },
+                    ease: 'power2.out'
+                });
+            });
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Service Detail Modal
+        function openServiceDetail(id) {
+            const service = db.services.find(s => s.id === id);
+            alert(`Service: ${service.title}\n\n${service.description}\n\nPrice: ${service.price}\n\nContact: XXXXXXXXXX`);
+        }
+
+        // Portfolio Detail
+        function openPortfolioDetail(id) {
+            const item = db.portfolio.find(p => p.id === id);
+            alert(`Project: ${item.title}\n\nClient: ${item.client}\nTools: ${item.tools}\n\nContact to discuss similar projects: XXXXXXXXXX`);
+        }
+
+        // Pricing Selection
+        function selectPricing(plan) {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                document.querySelector('select[name="service"]').value = plan === 'basic' ? 'web-design' : plan === 'professional' ? 'branding' : 'other';
+            }, 500);
+        }
+
+        // Contact Form
+        document.getElementById('contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            // Add to leads
+            db.leads.unshift({
+                name: data.name,
+                service: data.service,
+                budget: data.budget || 'Not specified',
+                date: new Date().toISOString().split('T')[0],
+                status: 'New'
+            });
+            
+            // Show success
+            const status = document.getElementById('form-status');
+            status.className = 'text-center py-3 rounded-lg bg-green-500/20 border border-green-500/30 text-green-600';
+            status.textContent = 'Thank you! Your message has been sent. We will contact you soon.';
+            status.classList.remove('hidden');
+            
+            // WhatsApp notification simulation
+            console.log(`WhatsApp alert sent to XXXXXXXXXX: New lead from ${data.name}`);
+            
+            e.target.reset();
+            
+            setTimeout(() => {
+                status.classList.add('hidden');
+            }, 5000);
+        });
+
+        // Admin Functions
+        function openAdminPanel() {
+            if (!isAdmin) {
+                document.getElementById('login-modal').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('admin-panel').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('admin-panel').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        // Login
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Demo credentials
+            if (email === 'admin@example.com' && password === 'admin123') {
+                isAdmin = true;
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-bar').classList.remove('hidden');
+                document.body.classList.add('admin-mode');
+                openAdminPanel();
+                alert('Welcome to Admin Dashboard!');
+            } else {
+                alert('Invalid credentials. Try admin@example.com / admin123');
+            }
+        });
+
+        function logoutAdmin() {
+            isAdmin = false;
+            editMode = false;
+            document.getElementById('admin-bar').classList.add('hidden');
+            document.body.classList.remove('admin-mode');
+            closeAdminPanel();
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            if (editMode) {
+                document.body.classList.add('admin-mode');
+                // Add click handlers to editable fields
+                document.querySelectorAll('.editable-field').forEach(field => {
+                    field.addEventListener('click', handleFieldEdit);
+                });
+                alert('Edit mode enabled. Click on any highlighted text to edit.');
+            } else {
+                document.body.classList.remove('admin-mode');
+                document.querySelectorAll('.editable-field').forEach(field => {
+                    field.removeEventListener('click', handleFieldEdit);
+                });
+            }
+        }
+
+        function handleFieldEdit(e) {
+            const field = e.target;
+            const fieldName = field.getAttribute('data-field');
+            const currentValue = field.innerText;
+            
+            const newValue = prompt(`Edit ${fieldName}:`, currentValue);
+            if (newValue && newValue !== currentValue) {
+                field.innerText = newValue;
+                // In production, save to database here
+                console.log(`Updated ${fieldName}: ${newValue}`);
+            }
+        }
+
+        function editSection(section) {
+            currentEditSection = section;
+            const modal = document.getElementById('edit-modal');
+            const title = document.getElementById('edit-modal-title');
+            const content = document.getElementById('edit-modal-content');
+            
+            title.textContent = `Edit ${section.charAt(0).toUpperCase() + section.slice(1)}`;
+            
+            // Generate edit form based on section
+            let formHTML = '';
+            switch(section) {
+                case 'hero':
+                    formHTML = `
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Hero Title</label>
+                            <textarea class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]" rows="3">${document.querySelector('[data-field="hero-title"]').innerText}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Hero Subtitle</label>
+                            <textarea class="w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]" rows="2">${document.querySelector('[data-field="hero-subtitle"]').innerText}</textarea>
+                        </div>
+                    `;
+                    break;
+                case 'services':
+                    formHTML = `
+                        <div class="space-y-4">
+                            ${db.services.map(s => `
+                                <div class="p-4 rounded-xl glass border border-[var(--border-color)]">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <input type="text" value="${s.title}" class="font-medium bg-transparent border-b border-[var(--border-color)] focus:border-primary-500 outline-none">
+                                        <button onclick="deleteService(${s.id})" class="text-red-500 hover:text-red-600"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                    <textarea class="w-full text-sm text-secondary-custom bg-transparent border border-[var(--border-color)] rounded p-2" rows="2">${s.description}</textarea>
+                                </div>
+                            `).join('')}
+                            <button onclick="addNewService()" class="w-full py-3 rounded-xl border-2 border-dashed border-[var(--border-color)] hover:border-primary-500 hover:text-primary-600 transition-all">
+                                <i class="fas fa-plus mr-2"></i>Add New Service
+                            </button>
+                        </div>
+                    `;
+                    break;
+                default:
+                    formHTML = '<p class="text-secondary-custom">Edit form for this section is under development.</p>';
+            }
+            
+            content.innerHTML = formHTML;
+            modal.classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            currentEditSection = null;
+        }
+
+        function saveEditChanges() {
+            // In production, save to database
+            alert('Changes saved successfully!');
+            closeEditModal();
+            // Re-render affected sections
+            if (currentEditSection === 'services') renderServices();
+        }
+
+        function addNewService() {
+            const newService = {
+                id: Date.now(),
+                icon: 'fa-star',
+                title: 'New Service',
+                description: 'Service description here...',
+                price: 'Contact for pricing'
+            };
+            db.services.push(newService);
+            editSection('services'); // Refresh modal
+        }
+
+        function deleteService(id) {
+            if (confirm('Delete this service?')) {
+                db.services = db.services.filter(s => s.id !== id);
+                editSection('services');
+            }
+        }
+
+        function loadMorePortfolio() {
+            // Simulate loading more items
+            const newItems = [
+                {
+                    id: 7,
+                    title: 'Mobile App Design',
+                    category: 'web',
+                    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80',
+                    description: 'iOS and Android app UI/UX',
+                    tools: 'Figma, Principle',
+                    client: 'AppWorks'
+                },
+                {
+                    id: 8,
+                    title: 'Brand Strategy',
+                    category: 'branding',
+                    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80',
+                    description: 'Complete brand positioning',
+                    tools: 'Strategy, Research',
+                    client: 'NewCo'
+                }
+            ];
+            
+            db.portfolio.push(...newItems);
+            renderPortfolio();
+            
+            // Animate new items
+            gsap.from('.portfolio-item:nth-last-child(-n+2)', {
+                opacity: 0,
+                y: 30,
+                duration: 0.6,
+                stagger: 0.1
+            });
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.querySelector('.glass').classList.add('shadow-lg');
+            } else {
+                navbar.querySelector('.glass').classList.remove('shadow-lg');
+            }
+        });
+
+        // Keyboard shortcuts for admin
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + Shift + A to open admin
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                openAdminPanel();
+            }
+        });
+    </script>
+</body>
+</html>

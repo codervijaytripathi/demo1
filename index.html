@@ -1,1106 +1,441 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURUM & NOIR | Luxury Jewellery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gold: #D4AF37;
-            --gold-light: #F4E8C1;
-            --black: #0a0a0a;
-            --black-light: #1a1a1a;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--black);
-            color: white;
-            overflow-x: hidden;
-        }
-        
-        .font-serif {
-            font-family: 'Cormorant Garamond', serif;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--black);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 4px;
-        }
-        
-        /* Gold Gradient Text */
-        .text-gold-gradient {
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Magnetic Button Effect */
-        .magnetic-btn {
-            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        
-        /* Horizontal Scroll Section */
-        .horizontal-scroll-container {
-            display: flex;
-            flex-wrap: nowrap;
-            will-change: transform;
-        }
-        
-        /* Masonry Grid */
-        .masonry-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 300px;
-            gap: 1.5rem;
-        }
-        
-        @media (max-width: 1024px) {
-            .masonry-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 640px) {
-            .masonry-grid {
-                grid-template-columns: 1fr;
-                grid-auto-rows: 400px;
-            }
-        }
-        
-        /* Custom Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
-        }
-        
-        @keyframes pulse-gold {
-            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6); }
-        }
-        
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .animate-float-delayed {
-            animation: float 8s ease-in-out infinite;
-            animation-delay: -2s;
-        }
-        
-        /* Image Hover Effects */
-        .img-zoom-container {
-            overflow: hidden;
-        }
-        
-        .img-zoom-container img {
-            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        
-        .img-zoom-container:hover img {
-            transform: scale(1.1);
-        }
-        
-        /* Gold Border Animation */
-        .gold-border-hover {
-            position: relative;
-        }
-        
-        .gold-border-hover::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border: 1px solid transparent;
-            transition: all 0.5s ease;
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        .gold-border-hover:hover::before {
-            border-color: var(--gold);
-            inset: 1rem;
-        }
-        
-        /* Text Reveal Animation */
-        .reveal-text {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-        }
-        
-        .reveal-text span {
-            display: inline-block;
-            transform: translateY(100%);
-            opacity: 0;
-        }
-        
-        /* Menu Overlay */
-        .menu-overlay {
-            clip-path: circle(0% at calc(100% - 3rem) 3rem);
-            transition: clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-        
-        .menu-overlay.active {
-            clip-path: circle(150% at calc(100% - 3rem) 3rem);
-        }
-        
-        /* Smooth Page Transitions */
-        .page-transition {
-            position: fixed;
-            inset: 0;
-            background: var(--gold);
-            z-index: 9999;
-            transform: translateY(100%);
-            pointer-events: none;
-        }
-        
-        /* Loader */
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--black);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-        
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-        
-        .loader-text {
-            font-size: 2rem;
-            letter-spacing: 0.5em;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        
-        /* Custom Cursor */
-        .custom-cursor {
-            width: 20px;
-            height: 20px;
-            border: 1px solid var(--gold);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transition: transform 0.2s, background 0.2s;
-            mix-blend-mode: difference;
-        }
-        
-        .custom-cursor.hover {
-            transform: scale(2);
-            background: var(--gold);
-        }
-        
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-        }
-        
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Parallax Layers */
-        .parallax-layer {
-            will-change: transform;
-        }
-        
-        /* Stagger Animation Delays */
-        .stagger-1 { animation-delay: 0.1s; }
-        .stagger-2 { animation-delay: 0.2s; }
-        .stagger-3 { animation-delay: 0.3s; }
-        .stagger-4 { animation-delay: 0.4s; }
-        .stagger-5 { animation-delay: 0.5s; }
-        
-        /* Glass Effect */
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        /* Noise Texture */
-        .noise {
-            position: relative;
-        }
-        
-        .noise::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 1;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Surbhi Fun — Surbhi Queen | Official Website</title>
+
+  <meta name="description" content="Surbhi Fun — official website of Surbhi Queen. Explore official social profiles, services and ways to connect.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Surbhi Fun">
+
+  <meta property="og:title" content="Surbhi Fun — Surbhi Queen">
+  <meta property="og:description" content="Official website of Surbhi Queen. Explore social profiles, services and ways to connect.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/profile.jpg">
+
+  <link rel="icon" href="assets/images/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="antialiased">
 
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="loader-text font-serif text-gold-gradient">AURUM & NOIR</div>
-    </div>
+<body>
 
-    <!-- Custom Cursor -->
-    <div class="custom-cursor hidden lg:block" id="cursor"></div>
+<header class="site-header">
+  <div class="container header-inner">
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="navbar">
-        <div class="w-full px-6 lg:px-12 py-6 flex justify-between items-center">
-            <a href="#" class="text-2xl lg:text-3xl font-serif font-light tracking-[0.3em] text-white hover:text-[#D4AF37] transition-colors duration-300" id="logo">
-                AURUM & NOIR
-            </a>
+    <a href="#home" class="logo">
+      SURBHI <span>QUEEN</span>
+    </a>
 
-            <div class="flex items-center gap-8">
-                <button class="hidden lg:block text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </button>
-                <button class="hidden lg:block text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="Wishlist">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                </button>
-                <button class="hidden lg:block text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="Cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                </button>
-
-                <!-- Hamburger Menu -->
-                <button class="relative w-10 h-10 flex flex-col justify-center items-center gap-1.5 group z-50" id="menuBtn" aria-label="Menu">
-                    <span class="w-6 h-px bg-white block transition-all duration-300 origin-center" id="line1"></span>
-                    <span class="w-6 h-px bg-white block transition-all duration-300" id="line2"></span>
-                    <span class="w-6 h-px bg-white block transition-all duration-300 origin-center" id="line3"></span>
-                </button>
-            </div>
-        </div>
+    <nav class="desktop-nav">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#social">Social</a>
+      <a href="#faq">FAQ</a>
     </nav>
 
-    <!-- Full Screen Menu Overlay -->
-    <div class="menu-overlay fixed inset-0 bg-black z-40 flex" id="menuOverlay">
-        <div class="w-full lg:w-1/2 flex flex-col justify-center px-12 lg:px-24 py-20">
-            <div class="space-y-6">
-                <a href="#collections" class="menu-link block text-5xl lg:text-7xl font-serif font-light text-white hover:text-[#D4AF37] transition-all duration-300 border-b border-white/10 pb-4 group flex items-center justify-between opacity-0 translate-x-[-50px]" style="transition-delay: 0.1s">
-                    Collections
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </a>
-                <a href="#atelier" class="menu-link block text-5xl lg:text-7xl font-serif font-light text-white hover:text-[#D4AF37] transition-all duration-300 border-b border-white/10 pb-4 group flex items-center justify-between opacity-0 translate-x-[-50px]" style="transition-delay: 0.2s">
-                    Atelier
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </a>
-                <a href="#heritage" class="menu-link block text-5xl lg:text-7xl font-serif font-light text-white hover:text-[#D4AF37] transition-all duration-300 border-b border-white/10 pb-4 group flex items-center justify-between opacity-0 translate-x-[-50px]" style="transition-delay: 0.3s">
-                    Heritage
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </a>
-                <a href="#concierge" class="menu-link block text-5xl lg:text-7xl font-serif font-light text-white hover:text-[#D4AF37] transition-all duration-300 border-b border-white/10 pb-4 group flex items-center justify-between opacity-0 translate-x-[-50px]" style="transition-delay: 0.4s">
-                    Concierge
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </a>
-            </div>
-        </div>
+    <a href="https://t.me/surbhi77" class="header-btn" target="_blank" rel="noopener">
+      Chat
+    </a>
 
-        <div class="hidden lg:flex w-1/2 bg-neutral-900 items-center justify-center relative overflow-hidden">
-            <div class="absolute inset-0 opacity-30">
-                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80" alt="Menu" class="w-full h-full object-cover">
-            </div>
-            <div class="relative z-10 text-center p-12 glass">
-                <p class="text-[#D4AF37] text-sm tracking-[0.3em] mb-4 uppercase">Exclusive Access</p>
-                <h3 class="text-3xl text-white font-serif font-light mb-6">Private Viewing</h3>
-                <p class="text-white/60 max-w-sm mb-8 text-sm leading-relaxed">Experience our most exclusive collections in person at our flagship atelier.</p>
-                <button class="px-8 py-3 border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all duration-300 text-sm tracking-widest uppercase">
-                    Book Appointment
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="relative h-screen w-full overflow-hidden bg-black" id="hero">
-        <div class="absolute inset-0">
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black z-10"></div>
-            <div class="absolute inset-0 scale-110" id="heroImage">
-                <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=1920&q=80" alt="Hero" class="w-full h-full object-cover opacity-60">
-            </div>
-        </div>
-
-        <div class="relative z-20 h-full flex flex-col justify-center px-6 lg:px-24 pt-20">
-            <div class="overflow-hidden mb-4">
-                <p class="text-[#D4AF37] text-sm tracking-[0.4em] uppercase hero-reveal">Where Darkness Meets Light</p>
-            </div>
-
-            <div class="space-y-2 mb-8">
-                <div class="overflow-hidden">
-                    <h1 class="text-6xl sm:text-8xl lg:text-[10rem] font-serif font-light text-white leading-[0.9] tracking-tight hero-reveal-text">Eternal</h1>
-                </div>
-                <div class="overflow-hidden">
-                    <h1 class="text-6xl sm:text-8xl lg:text-[10rem] font-serif font-light text-white leading-[0.9] tracking-tight hero-reveal-text">Elegance</h1>
-                </div>
-                <div class="overflow-hidden">
-                    <h1 class="text-6xl sm:text-8xl lg:text-[10rem] font-serif font-light text-white leading-[0.9] tracking-tight hero-reveal-text">Redefined</h1>
-                </div>
-            </div>
-
-            <div class="max-w-xl hero-fade">
-                <p class="text-white/70 text-lg lg:text-xl font-light leading-relaxed mb-8">
-                    Handcrafted luxury jewellery for the modern connoisseur. Each piece tells a story of passion, precision, and the relentless pursuit of perfection.
-                </p>
-                
-                <button class="group magnetic-btn flex items-center gap-4 bg-[#D4AF37] text-black px-8 py-4 text-sm tracking-[0.2em] uppercase font-medium hover:bg-[#F4E8C1] transition-colors duration-300">
-                    Explore Collection
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-2 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="absolute bottom-12 right-12 z-20 hidden lg:block hero-fade">
-            <div class="flex items-center gap-4 text-white/50 text-xs tracking-widest">
-                <span>SCROLL</span>
-                <div class="w-px h-12 bg-white/30 animate-pulse"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Brand Story Section (Split Layout) -->
-    <section class="relative min-h-screen bg-black py-24 lg:py-0 overflow-hidden" id="heritage">
-        <div class="lg:flex lg:min-h-screen">
-            <div class="lg:w-1/2 flex flex-col justify-center px-6 lg:px-24 py-12 lg:py-0 order-2 lg:order-1">
-                <span class="text-[#D4AF37] text-sm tracking-[0.3em] uppercase mb-6 reveal-up">Our Heritage</span>
-                
-                <h2 class="text-4xl lg:text-6xl font-serif font-light text-white leading-tight mb-8 reveal-up">
-                    A Legacy Written in <span class="text-gold-gradient">Gold</span>
-                </h2>
-                
-                <p class="text-white/60 text-lg leading-relaxed mb-12 max-w-lg reveal-up">
-                    Founded in the heart of Paris, Aurum & Noir represents the perfect fusion of traditional craftsmanship and contemporary design. Each piece tells a story of passion, precision, and the relentless pursuit of perfection.
-                </p>
-
-                <div class="grid grid-cols-3 gap-8 reveal-up">
-                    <div class="border-l border-[#D4AF37]/30 pl-4">
-                        <div class="text-3xl lg:text-4xl font-serif font-light text-[#D4AF37] mb-1">150+</div>
-                        <div class="text-white/40 text-xs tracking-widest uppercase">Years Heritage</div>
-                    </div>
-                    <div class="border-l border-[#D4AF37]/30 pl-4">
-                        <div class="text-3xl lg:text-4xl font-serif font-light text-[#D4AF37] mb-1">12</div>
-                        <div class="text-white/40 text-xs tracking-widest uppercase">Master Craftsmen</div>
-                    </div>
-                    <div class="border-l border-[#D4AF37]/30 pl-4">
-                        <div class="text-3xl lg:text-4xl font-serif font-light text-[#D4AF37] mb-1">∞</div>
-                        <div class="text-white/40 text-xs tracking-widest uppercase">Possibilities</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:w-1/2 relative h-[60vh] lg:h-auto overflow-hidden order-1 lg:order-2 parallax-container">
-                <div class="absolute inset-0 parallax-layer" data-speed="0.5">
-                    <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&q=80" alt="Brand Story" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/50"></div>
-                </div>
-                
-                <div class="absolute bottom-12 left-12 w-24 h-24 border border-[#D4AF37]/50 rounded-full flex items-center justify-center cursor-pointer hover:bg-[#D4AF37]/10 transition-colors group magnetic-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="ml-1 group-hover:scale-110 transition-transform"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Horizontal Scroll Gallery -->
-    <section class="relative bg-neutral-950" id="collections">
-        <div class="sticky top-0 h-screen flex items-center overflow-hidden">
-            <div class="absolute top-12 left-6 lg:left-24 z-10">
-                <span class="text-[#D4AF37] text-sm tracking-[0.3em] uppercase">Collections</span>
-                <h2 class="text-4xl lg:text-5xl font-serif font-light text-white mt-2">The Gallery</h2>
-            </div>
-
-            <div class="horizontal-scroll-container pl-6 lg:pl-24 pt-24 gap-8" id="horizontalScroll">
-                <!-- Product 1 -->
-                <div class="flex-shrink-0 w-[300px] lg:w-[400px] group cursor-pointer">
-                    <div class="relative overflow-hidden bg-neutral-900 aspect-[3/4] mb-6 gold-border-hover img-zoom-container">
-                        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80" alt="Midnight Sun Ring" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button class="px-6 py-3 bg-[#D4AF37] text-black text-sm tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-[#D4AF37]/60 text-xs tracking-[0.2em] uppercase">Rings</p>
-                        <h3 class="text-white text-xl font-serif font-light group-hover:text-[#D4AF37] transition-colors">Midnight Sun Ring</h3>
-                        <p class="text-white/40">$12,500</p>
-                    </div>
-                </div>
-
-                <!-- Product 2 -->
-                <div class="flex-shrink-0 w-[300px] lg:w-[400px] group cursor-pointer">
-                    <div class="relative overflow-hidden bg-neutral-900 aspect-[3/4] mb-6 gold-border-hover img-zoom-container">
-                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="Obsidian Necklace" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button class="px-6 py-3 bg-[#D4AF37] text-black text-sm tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-[#D4AF37]/60 text-xs tracking-[0.2em] uppercase">Necklaces</p>
-                        <h3 class="text-white text-xl font-serif font-light group-hover:text-[#D4AF37] transition-colors">Obsidian Necklace</h3>
-                        <p class="text-white/40">$8,900</p>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="flex-shrink-0 w-[300px] lg:w-[400px] group cursor-pointer">
-                    <div class="relative overflow-hidden bg-neutral-900 aspect-[3/4] mb-6 gold-border-hover img-zoom-container">
-                        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80" alt="Golden Hour Bracelet" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button class="px-6 py-3 bg-[#D4AF37] text-black text-sm tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-[#D4AF37]/60 text-xs tracking-[0.2em] uppercase">Bracelets</p>
-                        <h3 class="text-white text-xl font-serif font-light group-hover:text-[#D4AF37] transition-colors">Golden Hour Bracelet</h3>
-                        <p class="text-white/40">$15,600</p>
-                    </div>
-                </div>
-
-                <!-- Product 4 -->
-                <div class="flex-shrink-0 w-[300px] lg:w-[400px] group cursor-pointer">
-                    <div class="relative overflow-hidden bg-neutral-900 aspect-[3/4] mb-6 gold-border-hover img-zoom-container">
-                        <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80" alt="Eclipse Earrings" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button class="px-6 py-3 bg-[#D4AF37] text-black text-sm tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-[#D4AF37]/60 text-xs tracking-[0.2em] uppercase">Earrings</p>
-                        <h3 class="text-white text-xl font-serif font-light group-hover:text-[#D4AF37] transition-colors">Eclipse Earrings</h3>
-                        <p class="text-white/40">$7,200</p>
-                    </div>
-                </div>
-
-                <!-- Product 5 -->
-                <div class="flex-shrink-0 w-[300px] lg:w-[400px] group cursor-pointer">
-                    <div class="relative overflow-hidden bg-neutral-900 aspect-[3/4] mb-6 gold-border-hover img-zoom-container">
-                        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80" alt="Stellar Pendant" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button class="px-6 py-3 bg-[#D4AF37] text-black text-sm tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-[#D4AF37]/60 text-xs tracking-[0.2em] uppercase">Pendants</p>
-                        <h3 class="text-white text-xl font-serif font-light group-hover:text-[#D4AF37] transition-colors">Stellar Pendant</h3>
-                        <p class="text-white/40">$9,800</p>
-                    </div>
-                </div>
-
-                <!-- Product 6 -->
-                <div class="flex-shrink-0 w-[300px] lg:w-[400px] group cursor-pointer">
-                    <div class="relative overflow-hidden bg-neutral-900 aspect-[3/4] mb-6 gold-border-hover img-zoom-container">
-                        <img src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=600&q=80" alt="Aurora Band" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <button class="px-6 py-3 bg-[#D4AF37] text-black text-sm tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-[#D4AF37]/60 text-xs tracking-[0.2em] uppercase">Rings</p>
-                        <h3 class="text-white text-xl font-serif font-light group-hover:text-[#D4AF37] transition-colors">Aurora Band</h3>
-                        <p class="text-white/40">$4,500</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="absolute bottom-12 right-6 lg:right-24 flex items-center gap-4">
-                <div class="w-32 h-px bg-white/20"></div>
-                <span class="text-white/40 text-xs tracking-widest">SCROLL TO EXPLORE</span>
-            </div>
-        </div>
-        <div class="h-[100vh]"></div>
-    </section>
-
-    <!-- Quote Section -->
-    <section class="relative py-32 lg:py-48 bg-black overflow-hidden noise">
-        <div class="absolute inset-0 opacity-5 pointer-events-none">
-            <div class="absolute inset-0 text-[20vw] font-serif font-bold text-white leading-none select-none flex items-center justify-center text-center whitespace-nowrap">
-                AURUM
-            </div>
-        </div>
-
-        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
-            <div class="inline-block mb-12 reveal-scale">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
-            </div>
-
-            <h2 class="text-3xl lg:text-6xl font-serif font-light text-white leading-tight mb-12 reveal-up">
-                "Jewellery is not just an accessory. It is a statement of who you are and who you aspire to be."
-            </h2>
-
-            <div class="space-y-2 reveal-up">
-                <p class="text-[#D4AF37] text-lg tracking-widest uppercase font-serif">Isabella Laurent</p>
-                <p class="text-white/40 text-sm">Creative Director</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Masonry Showcase -->
-    <section class="relative bg-neutral-950 py-24 px-6 lg:px-12" id="atelier">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col lg:flex-row justify-between items-end mb-16">
-                <div>
-                    <span class="text-[#D4AF37] text-sm tracking-[0.3em] uppercase">Curated Selection</span>
-                    <h2 class="text-4xl lg:text-6xl font-serif font-light text-white mt-2">Masterpieces</h2>
-                </div>
-                <button class="mt-6 lg:mt-0 text-white/60 hover:text-[#D4AF37] transition-colors flex items-center gap-2 text-sm tracking-widest uppercase group">
-                    View All 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-2 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </div>
-
-            <div class="masonry-grid">
-                <!-- Large Item -->
-                <div class="lg:col-span-2 lg:row-span-2 relative group overflow-hidden cursor-pointer reveal-up">
-                    <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=900&q=80" alt="Featured" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="absolute inset-0 border border-[#D4AF37]/0 group-hover:border-[#D4AF37]/30 transition-all duration-500 m-4"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                        <p class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase mb-2">Featured</p>
-                        <h3 class="text-2xl text-white font-serif font-light mb-2">The Midnight Collection</h3>
-                        <p class="text-white/60 mb-4">Starting at $25,000</p>
-                        <button class="flex items-center gap-2 text-white text-sm tracking-widest uppercase group/btn">
-                            Discover 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover/btn:translate-x-2 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        </button>
-                    </div>
-                    <div class="absolute top-8 right-8">
-                        <span class="px-4 py-2 bg-[#D4AF37] text-black text-xs tracking-widest uppercase">Featured</span>
-                    </div>
-                </div>
-
-                <!-- Regular Items -->
-                <div class="relative group overflow-hidden cursor-pointer reveal-up stagger-1">
-                    <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80" alt="Product 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="absolute inset-0 border border-[#D4AF37]/0 group-hover:border-[#D4AF37]/30 transition-all duration-500 m-4"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                        <p class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase mb-1">Rings</p>
-                        <h3 class="text-xl text-white font-serif font-light mb-1">Celestial Band</h3>
-                        <p class="text-white/60">$8,500</p>
-                    </div>
-                </div>
-
-                <div class="relative group overflow-hidden cursor-pointer reveal-up stagger-2">
-                    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="Product 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="absolute inset-0 border border-[#D4AF37]/0 group-hover:border-[#D4AF37]/30 transition-all duration-500 m-4"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                        <p class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase mb-1">Necklaces</p>
-                        <h3 class="text-xl text-white font-serif font-light mb-1">Lunar Pendant</h3>
-                        <p class="text-white/60">$12,200</p>
-                    </div>
-                </div>
-
-                <div class="relative group overflow-hidden cursor-pointer reveal-up stagger-3">
-                    <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80" alt="Product 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="absolute inset-0 border border-[#D4AF37]/0 group-hover:border-[#D4AF37]/30 transition-all duration-500 m-4"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                        <p class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase mb-1">Earrings</p>
-                        <h3 class="text-xl text-white font-serif font-light mb-1">Starlight Drops</h3>
-                        <p class="text-white/60">$6,800</p>
-                    </div>
-                </div>
-
-                <div class="relative group overflow-hidden cursor-pointer reveal-up stagger-4">
-                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80" alt="Product 4" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="absolute inset-0 border border-[#D4AF37]/0 group-hover:border-[#D4AF37]/30 transition-all duration-500 m-4"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                        <p class="text-[#D4AF37] text-xs tracking-[0.2em] uppercase mb-1">Bracelets</p>
-                        <h3 class="text-xl text-white font-serif font-light mb-1">Infinity Chain</h3>
-                        <p class="text-white/60">$15,000</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Product Spotlight -->
-    <section class="relative bg-black min-h-screen flex items-center overflow-hidden">
-        <div class="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=1200&q=80" alt="Spotlight" class="w-full h-full object-cover opacity-40">
-            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
-        </div>
-
-        <div class="relative z-10 w-full px-6 lg:px-24 py-24">
-            <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-                <div class="reveal-left">
-                    <span class="text-[#D4AF37] text-sm tracking-[0.3em] uppercase mb-6 block">The Crown Jewel</span>
-                    <h2 class="text-5xl lg:text-7xl font-serif font-light text-white mb-6">The Black Diamond</h2>
-                    <p class="text-3xl text-[#D4AF37] font-serif font-light mb-8">$125,000</p>
-                    
-                    <div class="flex gap-8 mb-8 border-b border-white/10">
-                        <button class="tab-btn pb-4 text-sm tracking-widest uppercase text-[#D4AF37] border-b-2 border-[#D4AF37] transition-all" data-tab="0">Details</button>
-                        <button class="tab-btn pb-4 text-sm tracking-widest uppercase text-white/40 hover:text-white transition-all" data-tab="1">Craftsmanship</button>
-                        <button class="tab-btn pb-4 text-sm tracking-widest uppercase text-white/40 hover:text-white transition-all" data-tab="2">Heritage</button>
-                    </div>
-
-                    <div class="tab-contents mb-12">
-                        <div class="tab-content active text-white/60 leading-relaxed" id="tab-0">
-                            A masterpiece featuring a rare 12-carat black diamond, surrounded by 48 brilliant-cut white diamonds set in 24k gold. This piece represents the pinnacle of luxury and exclusivity.
-                        </div>
-                        <div class="tab-content text-white/60 leading-relaxed" id="tab-1">
-                            Handcrafted by our master artisans over 400 hours, featuring intricate pavé setting techniques passed down through generations of skilled craftsmen.
-                        </div>
-                        <div class="tab-content text-white/60 leading-relaxed" id="tab-2">
-                            This piece represents the pinnacle of our 150-year legacy, combining rare gemstones with unprecedented design innovation and timeless elegance.
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4">
-                        <button class="magnetic-btn flex-1 bg-[#D4AF37] text-black py-4 text-sm tracking-[0.2em] uppercase font-medium hover:bg-[#F4E8C1] transition-colors duration-300">
-                            Inquire Now
-                        </button>
-                        <button class="magnetic-btn px-6 border border-white/20 text-white hover:bg-white/10 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="relative hidden lg:block reveal-right">
-                    <div class="relative aspect-[3/4]">
-                        <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=800&q=80" alt="Product" class="w-full h-full object-cover">
-                        <div class="absolute -inset-4 border border-[#D4AF37]/20"></div>
-                        <div class="absolute -inset-8 border border-[#D4AF37]/10"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Floating Appointment CTA -->
-    <section class="relative py-32 bg-neutral-950 overflow-hidden" id="concierge">
-        <div class="absolute top-20 right-20 w-64 h-64 bg-[#D4AF37]/5 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute bottom-20 left-20 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl animate-float-delayed"></div>
-
-        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#D4AF37]/10 mb-8 reveal-scale">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            </div>
-
-            <h2 class="text-4xl lg:text-6xl font-serif font-light text-white mb-6 reveal-up">
-                Private <span class="text-gold-gradient">Consultation</span>
-            </h2>
-
-            <p class="text-white/60 text-lg mb-12 max-w-2xl mx-auto reveal-up">
-                Experience our bespoke services with a personal consultation. Our experts will guide you through our collections and help you find the perfect expression of your style.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center reveal-up">
-                <button class="group relative px-12 py-5 bg-[#D4AF37] text-black overflow-hidden magnetic-btn">
-                    <span class="relative z-10 text-sm tracking-[0.2em] uppercase font-medium flex items-center justify-center gap-3">
-                        Book Appointment 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-2 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </span>
-                </button>
-                
-                <button class="px-12 py-5 border border-white/20 text-white hover:bg-white/5 transition-colors text-sm tracking-[0.2em] uppercase magnetic-btn">
-                    Virtual Tour
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black border-t border-white/5 pt-24 pb-12 px-6 lg:px-24">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
-                <div class="lg:col-span-6">
-                    <h3 class="text-3xl lg:text-5xl font-serif font-light text-white mb-6">
-                        Join the <span class="text-[#D4AF37]">Inner Circle</span>
-                    </h3>
-                    <p class="text-white/40 mb-8 max-w-md">
-                        Subscribe to receive exclusive access to new collections, private events, and bespoke services.
-                    </p>
-                    <form class="flex gap-4 max-w-md" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
-                        <input type="email" placeholder="Your email" required class="flex-1 bg-white/5 border border-white/10 px-6 py-4 text-white placeholder:text-white/30 focus:outline-none focus:border-[#D4AF37]/50 transition-colors">
-                        <button type="submit" class="px-8 bg-[#D4AF37] text-black font-medium hover:bg-[#F4E8C1] transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="lg:col-span-6 grid grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="text-white text-sm tracking-[0.2em] uppercase mb-6">Atelier</h4>
-                        <ul class="space-y-4 text-white/40 text-sm">
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Collections</a></li>
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Bespoke</a></li>
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Heritage</a></li>
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Journal</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-white text-sm tracking-[0.2em] uppercase mb-6">Concierge</h4>
-                        <ul class="space-y-4 text-white/40 text-sm">
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Contact</a></li>
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Appointments</a></li>
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Care Guide</a></li>
-                            <li><a href="#" class="hover:text-[#D4AF37] transition-colors">Shipping</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex flex-col lg:flex-row justify-between items-center pt-12 border-t border-white/5">
-                <div class="text-2xl font-serif font-light tracking-[0.3em] text-white mb-6 lg:mb-0">
-                    AURUM & NOIR
-                </div>
-                
-                <div class="flex items-center gap-8 text-white/30">
-                    <a href="#" class="hover:text-[#D4AF37] transition-colors" aria-label="Instagram">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </a>
-                    <a href="#" class="hover:text-[#D4AF37] transition-colors" aria-label="Email">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                    </a>
-                    <a href="#" class="hover:text-[#D4AF37] transition-colors" aria-label="Location">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                    </a>
-                    <a href="#" class="hover:text-[#D4AF37] transition-colors" aria-label="Phone">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    </a>
-                </div>
-
-                <div class="mt-6 lg:mt-0 text-white/30 text-xs tracking-widest">
-                    © 2024 AURUM & NOIR. All rights reserved.
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Floating CTA Button -->
-    <button class="fixed bottom-8 right-8 z-40 w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300 opacity-0 translate-y-10" id="floatingCTA" aria-label="Book Appointment">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      ☰
     </button>
 
-    <script>
-        // Register GSAP ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
+  </div>
+</header>
 
-        // Loader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-                initAnimations();
-            }, 1500);
-        });
+<div class="mobile-menu" id="mobileMenu">
 
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+  <button class="close-menu" id="closeMenu" aria-label="Close menu">
+    ×
+  </button>
 
-        if (!isTouchDevice && cursor) {
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX - 10 + 'px';
-                cursor.style.top = e.clientY - 10 + 'px';
-            });
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="#social">Social</a>
+  <a href="#faq">FAQ</a>
 
-            document.querySelectorAll('a, button, .magnetic-btn').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-            });
-        }
+  <a href="https://t.me/surbhi77" class="mobile-chat-btn" target="_blank" rel="noopener">
+    Chat with Surbhi
+  </a>
 
-        // Navigation Scroll Effect
-        const navbar = document.getElementById('navbar');
-        let lastScroll = 0;
+</div>
 
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                navbar.classList.add('bg-black/90', 'backdrop-blur-md', 'py-4');
-                navbar.classList.remove('py-6', 'bg-transparent');
-            } else {
-                navbar.classList.remove('bg-black/90', 'backdrop-blur-md', 'py-4');
-                navbar.classList.add('py-6', 'bg-transparent');
-            }
+<main>
 
-            // Floating CTA visibility
-            const floatingCTA = document.getElementById('floatingCTA');
-            if (currentScroll > 500) {
-                floatingCTA.classList.remove('opacity-0', 'translate-y-10');
-            } else {
-                floatingCTA.classList.add('opacity-0', 'translate-y-10');
-            }
+<section class="hero section" id="home">
+  <div class="container hero-grid">
 
-            lastScroll = currentScroll;
-        });
+    <div class="hero-content">
+      <span class="eyebrow">OFFICIAL PROFILE</span>
 
-        // Menu Toggle
-        const menuBtn = document.getElementById('menuBtn');
-        const menuOverlay = document.getElementById('menuOverlay');
-        const menuLinks = document.querySelectorAll('.menu-link');
-        let menuOpen = false;
+      <h1>
+        SURBHI
+        <span>QUEEN</span>
+      </h1>
 
-        menuBtn.addEventListener('click', () => {
-            menuOpen = !menuOpen;
-            menuOverlay.classList.toggle('active');
-            
-            const line1 = document.getElementById('line1');
-            const line2 = document.getElementById('line2');
-            const line3 = document.getElementById('line3');
+      <p class="hero-description">
+        Welcome to the official online space of Surbhi Queen.
+        Explore social profiles, available services and ways to connect.
+      </p>
 
-            if (menuOpen) {
-                line1.style.transform = 'rotate(45deg) translateY(6px)';
-                line2.style.opacity = '0';
-                line3.style.transform = 'rotate(-45deg) translateY(-6px)';
-                
-                menuLinks.forEach((link, i) => {
-                    setTimeout(() => {
-                        link.style.opacity = '1';
-                        link.style.transform = 'translateX(0)';
-                    }, 300 + (i * 100));
-                });
-            } else {
-                line1.style.transform = 'none';
-                line2.style.opacity = '1';
-                line3.style.transform = 'none';
-                
-                menuLinks.forEach(link => {
-                    link.style.opacity = '0';
-                    link.style.transform = 'translateX(-50px)';
-                });
-            }
-        });
+      <div class="hero-actions">
+        <a href="https://t.me/surbhi77" class="btn btn-primary" target="_blank" rel="noopener">
+          Chat with Surbhi
+        </a>
 
-        // Close menu on link click
-        menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                menuBtn.click();
-            });
-        });
+        <a href="#services" class="btn btn-secondary">
+          View Services
+        </a>
+      </div>
 
-        // Tab Functionality
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
+      <div class="hero-status">
+        <span class="status-dot"></span>
+        Official Surbhi Fun profile
+      </div>
+    </div>
 
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabIndex = btn.dataset.tab;
-                
-                tabBtns.forEach(b => {
-                    b.classList.remove('text-[#D4AF37]', 'border-b-2', 'border-[#D4AF37]');
-                    b.classList.add('text-white/40');
-                });
-                
-                btn.classList.remove('text-white/40');
-                btn.classList.add('text-[#D4AF37]', 'border-b-2', 'border-[#D4AF37]');
-                
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                document.getElementById(`tab-${tabIndex}`).classList.add('active');
-            });
-        });
+    <div class="hero-visual">
+      <div class="hero-image-card">
+        <img src="assets/images/profile.jpg" alt="Surbhi Queen official profile" loading="eager">
 
-        // Initialize Animations
-        function initAnimations() {
-            // Hero Animations
-            gsap.from('.hero-reveal', {
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                delay: 0.5,
-                ease: 'power3.out'
-            });
+        <div class="image-label">
+          <span>SQ</span>
+          <div>
+            <strong>Surbhi Queen</strong>
+            <small>Official Profile</small>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            gsap.from('.hero-reveal-text', {
-                y: 100,
-                opacity: 0,
-                duration: 1,
-                stagger: 0.1,
-                delay: 0.3,
-                ease: 'power3.out'
-            });
+  </div>
+</section>
 
-            gsap.from('.hero-fade', {
-                y: 30,
-                opacity: 0,
-                duration: 0.8,
-                delay: 1.2,
-                ease: 'power3.out'
-            });
+<section class="social section" id="social">
+  <div class="container">
 
-            gsap.from('#heroImage', {
-                scale: 1.2,
-                duration: 2,
-                ease: 'power2.out'
-            });
+    <div class="section-heading">
+      <span class="eyebrow">CONNECT</span>
+      <h2>Find Me Online</h2>
+      <p>Follow the official profiles and stay connected.</p>
+    </div>
 
-            // Scroll Reveals
-            gsap.utils.toArray('.reveal-up').forEach(elem => {
-                gsap.from(elem, {
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: 'top 85%',
-                        toggleActions: 'play none none reverse'
-                    },
-                    y: 60,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: 'power3.out'
-                });
-            });
+    <div class="social-grid">
 
-            gsap.utils.toArray('.reveal-left').forEach(elem => {
-                gsap.from(elem, {
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: 'top 85%',
-                        toggleActions: 'play none none reverse'
-                    },
-                    x: -50,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: 'power3.out'
-                });
-            });
+      <a href="#" class="social-card" target="_blank" rel="noopener">
+        <div class="social-icon instagram">IG</div>
+        <div class="social-card-content">
+          <h3>Instagram</h3>
+          <p>Follow on Instagram</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
 
-            gsap.utils.toArray('.reveal-right').forEach(elem => {
-                gsap.from(elem, {
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: 'top 85%',
-                        toggleActions: 'play none none reverse'
-                    },
-                    x: 50,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: 'power3.out'
-                });
-            });
+      <a href="https://t.me/surbhi77" class="social-card" target="_blank" rel="noopener">
+        <div class="social-icon telegram">TG</div>
+        <div class="social-card-content">
+          <h3>Telegram</h3>
+          <p>Connect on Telegram</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
 
-            gsap.utils.toArray('.reveal-scale').forEach(elem => {
-                gsap.from(elem, {
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: 'top 85%',
-                        toggleActions: 'play none none reverse'
-                    },
-                    scale: 0,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: 'back.out(1.7)'
-                });
-            });
+      <a href="#" class="social-card" target="_blank" rel="noopener">
+        <div class="social-icon facebook">FB</div>
+        <div class="social-card-content">
+          <h3>Facebook</h3>
+          <p>Official Facebook</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
 
-            // Parallax Effect
-            gsap.utils.toArray('.parallax-layer').forEach(layer => {
-                const speed = layer.dataset.speed || 0.5;
-                gsap.to(layer, {
-                    y: -100 * speed,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: layer.closest('.parallax-container'),
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: true
-                    }
-                });
-            });
+      <a href="#" class="social-card" target="_blank" rel="noopener">
+        <div class="social-icon snapchat">SC</div>
+        <div class="social-card-content">
+          <h3>Snapchat</h3>
+          <p>Follow on Snapchat</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
 
-            // Horizontal Scroll
-            const horizontalScroll = document.getElementById('horizontalScroll');
-            if (horizontalScroll) {
-                gsap.to(horizontalScroll, {
-                    x: () => -(horizontalScroll.scrollWidth - window.innerWidth + 100),
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: '#collections',
-                        start: 'top top',
-                        end: () => '+=' + (horizontalScroll.scrollWidth - window.innerWidth),
-                        scrub: 1,
-                        pin: true,
-                        anticipatePin: 1
-                    }
-                });
-            }
+    </div>
+  </div>
+</section>
 
-            // Logo hover effect
-            const logo = document.getElementById('logo');
-            logo.addEventListener('mouseenter', () => {
-                logo.style.letterSpacing = '0.4em';
-            });
-            logo.addEventListener('mouseleave', () => {
-                logo.style.letterSpacing = '0.3em';
-            });
-        }
+<section class="services section" id="services">
+  <div class="container">
 
-        // Magnetic Button Effect
-        document.querySelectorAll('.magnetic-btn').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-            });
-            
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0, 0)';
-            });
-        });
+    <div class="section-heading">
+      <span class="eyebrow">SERVICES</span>
+      <h2>Explore Services</h2>
+      <p>Choose an option to explore available services.</p>
+    </div>
 
-        // Smooth Scroll for Anchor Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+    <div class="service-grid">
+
+      <article class="service-card">
+        <span class="service-number">01</span>
+        <div class="service-icon">✦</div>
+        <h3>Demo</h3>
+        <p>Explore available demonstrations and featured content.</p>
+        <a href="#demo" class="service-link">Explore <span>→</span></a>
+      </article>
+
+      <article class="service-card">
+        <span class="service-number">02</span>
+        <div class="service-icon">💬</div>
+        <h3>Chat</h3>
+        <p>Connect through the official Telegram profile.</p>
+        <a href="https://t.me/surbhi77" class="service-link" target="_blank" rel="noopener">
+          Connect <span>→</span>
+        </a>
+      </article>
+
+      <article class="service-card">
+        <span class="service-number">03</span>
+        <div class="service-icon">◉</div>
+        <h3>Video Call</h3>
+        <p>Explore available online video sessions.</p>
+        <a href="https://t.me/surbhi77" class="service-link" target="_blank" rel="noopener">
+          Explore <span>→</span>
+        </a>
+      </article>
+
+      <article class="service-card">
+        <span class="service-number">04</span>
+        <div class="service-icon">☎</div>
+        <h3>Voice Call</h3>
+        <p>Connect through the official Telegram profile.</p>
+        <a href="https://t.me/surbhi77" class="service-link" target="_blank" rel="noopener">
+          Connect <span>→</span>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="demo section" id="demo">
+  <div class="container">
+
+    <div class="section-heading">
+      <span class="eyebrow">DEMO</span>
+      <h2>Explore the Demo</h2>
+      <p>Explore available previews and featured content.</p>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-content">
+        <span class="demo-badge">FEATURED</span>
+        <h3>Surbhi Queen Demo</h3>
+        <p>Follow the official social profile to continue.</p>
+
+        <div class="demo-actions">
+          <a href="#" class="btn btn-primary">Follow on Instagram</a>
+          <a href="#" class="btn btn-secondary">Continue</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="about section" id="about">
+  <div class="container about-grid">
+
+    <div class="about-image">
+      <img src="assets/images/profile.jpg" alt="Surbhi Queen official profile" loading="lazy">
+    </div>
+
+    <div class="about-content">
+      <span class="eyebrow">ABOUT</span>
+      <h2>About Surbhi</h2>
+
+      <p>
+        Welcome to the official online space of Surbhi Queen.
+      </p>
+
+      <p>
+        Here you can find official social profiles,
+        available services and simple ways to connect.
+      </p>
+
+      <a href="https://t.me/surbhi77" class="btn btn-primary" target="_blank" rel="noopener">
+        Connect on Telegram
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section class="why section">
+  <div class="container">
+
+    <div class="section-heading">
+      <span class="eyebrow">WHY CONNECT</span>
+      <h2>Simple. Clear. Official.</h2>
+    </div>
+
+    <div class="why-grid">
+
+      <div class="why-card">
+        <span>01</span>
+        <h3>Official Links</h3>
+        <p>Find the official social profiles in one place.</p>
+      </div>
+
+      <div class="why-card">
+        <span>02</span>
+        <h3>Clear Information</h3>
+        <p>Explore available services and information easily.</p>
+      </div>
+
+      <div class="why-card">
+        <span>03</span>
+        <h3>Easy Communication</h3>
+        <p>Connect through the official Telegram profile.</p>
+      </div>
+
+      <div class="why-card">
+        <span>04</span>
+        <h3>Mobile First</h3>
+        <p>Designed primarily for a smooth mobile experience.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="faq section" id="faq">
+  <div class="container">
+
+    <div class="section-heading">
+      <span class="eyebrow">FAQ</span>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list">
+
+      <details>
+        <summary>What is Surbhi Fun?</summary>
+        <p>
+          Surbhi Fun is the official online space for Surbhi Queen's
+          social profiles, services and ways to connect.
+        </p>
+      </details>
+
+      <details>
+        <summary>How can I connect with Surbhi?</summary>
+        <p>
+          You can connect through the official Telegram profile
+          or the social links available on this website.
+        </p>
+      </details>
+
+      <details>
+        <summary>Where can I find the official profiles?</summary>
+        <p>
+          All available official social profiles are listed
+          in the Connect section.
+        </p>
+      </details>
+
+      <details>
+        <summary>Where can I see available services?</summary>
+        <p>
+          Visit the Services section to explore the
+          currently available options.
+        </p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+
+    <span class="eyebrow">STAY CONNECTED</span>
+
+    <h2>Ready to Connect?</h2>
+
+    <p>
+      Continue through the official Telegram profile.
+    </p>
+
+    <a href="https://t.me/surbhi77" class="btn btn-light" target="_blank" rel="noopener">
+      Chat with Surbhi
+    </a>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+
+    <div class="footer-top">
+
+      <div>
+        <a href="#home" class="footer-logo">
+          SURBHI <span>QUEEN</span>
+        </a>
+
+        <p>Surbhi Fun — Official Website</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#social">Social</a>
+        <a href="#faq">FAQ</a>
+      </div>
+
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="https://t.me/surbhi77" aria-label="Telegram">TG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="Snapchat">SC</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+      <span>
+        © 2026 Surbhi Fun. All rights reserved.
+      </span>
+
+      <div>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+
+    </div>
+
+  </div>
+</footer>
+
+<div class="mobile-bottom-cta">
+  <a href="https://t.me/surbhi77" target="_blank" rel="noopener">
+    💬 Chat with Surbhi
+  </a>
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
